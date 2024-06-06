@@ -1,0 +1,8 @@
+---
+institution_name: Example Institution
+colors:
+  header: "#333333"
+  primary: "#AAAAFF"
+  secondary: "#AAAAAA"
+logo_file: identity/logo.png
+about_page_template: identity/about.html
