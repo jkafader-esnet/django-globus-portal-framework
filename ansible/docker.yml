@@ -1,0 +1,5 @@
+---
+- name: Install Globus Portal
+  hosts: all
+  roles:
+    - role: ../roles/django-globus-portal-framework

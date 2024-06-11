@@ -3,3 +3,4 @@
   hosts: globus-portal-dev-vagrant
   roles:
     - role: ../roles/django-globus-portal-framework
+  become: true

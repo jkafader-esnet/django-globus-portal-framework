@@ -1,0 +1,10 @@
+---
+- name: restart apache
+  # full restart to deal with e.g. a2dismod mpm_event
+  service:
+      name: apache2
+      state: "{{ item.state }}"
+  with_items:
+      - state: stopped
+      - state: started
+  listen: "restart apache"

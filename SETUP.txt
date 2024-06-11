@@ -1,0 +1,48 @@
+# Assumption: You use ~/work for work-related files
+export WORK_DIR=~/work
+
+mkdir $WORK_DIR
+
+# clone the django globus portal framework into ~/work
+git clone git@github.com:jkafader-esnet/django-globus-portal-framework.git $WORK_DIR
+
+# create a virtualenv for installing ansible
+python3 -m venv $WORK_DIR/ansible-venv
+
+# activate the ansible venv
+source $WORK_DIR/ansible-venv/bin/activate
+
+# install the python 'docker' module (note that this is not docker)
+pip install docker
+
+# install ansible
+pip install ansible
+
+# deactivate virtual environment
+deativate
+
+# re-activate the ansible venv
+source ~/work/ansible-venv/bin/activate
+
+# ensure exactly which "ansible-doc" binary for the below command
+which ansible-doc
+# should return something like $WORK/ansible-venv/bin/ansible-doc
+
+# ensure that community docker.docker is in this list:
+ansible-doc -t connection -l
+
+# ensure docker is installed properly on your system
+docker --help
+
+# start the target docker container ("sleep 600" to stay alive while we install)
+# map port 80 in the container to localhost:8080
+docker run -d -t --name=globus-portal -p 8080:80 python:3.10-slim-bullseye
+
+# if so, we're ready to run the role which will bring up the image
+ansible-playbook --connection docker --inventory "globus-portal," $WORK_DIR/django-globus-portal-framework/ansible/docker.yml
+
+# use a brower to deal check that the application is running
+open http://localhost:8080
+
+# at this point, congratulations, you've got a broken install! From here to a working version, there's a lot left to do.
+

@@ -1,0 +1,13 @@
+ALLOWED_HOSTS: 
+    - "{{ settings.hostname }}"
+
+COLORS:
+    header: "{{ settings.colors.get('primary', '#CCE') }}"
+    primary: "{{ settings.colors.get('primary', '#CCE') }}"
+    secondary: "{{ settings.colors.get('secondary', '#CCD') }}"
+    surfaces:
+        - "{{ settings.colors.get('surfaces', ['#FFFFFF'])[0] }}"
+        - "{{ settings.colors.get('surfaces', ['#FFFFFF', '#EEEEEE'])[1] }}"
+        - "{{ settings.colors.get('surfaces', ['#FFFFFF', '#EEEEEE', '#DDDDDD'])[2] }}"
+
+LOGO_FILENAME: "{{ settings.logo_file }}"

@@ -111,3 +111,6 @@ ENV/
 
 # Vagrant
 .vagrant
+
+# emacs
+*~

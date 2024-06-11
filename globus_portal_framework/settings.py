@@ -12,7 +12,18 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 from globus_portal_framework.constants import FILTER_MATCH_ALL
+import yaml
 
+# load config from /etc/portal/portal.yml
+conf = None
+try:
+    with open(os.environ.get("PORTAL_CONF", "/etc/globus-portal/settings.yml")) as f:
+        conf = yaml.safe_load(f)
+except Exception as e:
+    logging.warn("%s -- using default (dev) settings", e)
+finally:
+    # yaml.safe_load() can return None
+    conf = conf or {}
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -105,7 +116,7 @@ SOCIAL_AUTH_GLOBUS_SECRET = '<your_Globus_Auth_Client_Secret>'
 # https://python-social-auth.readthedocs.io/en/latest/configuration/django.html#database  # noqa
 # SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = conf.get("ALLOWED_HOSTS", [])
 INTERNAL_IPS = (
     '127.0.0.1',
 )
@@ -265,7 +276,18 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+COLORS = conf.get("COLORS", {
+    "header": "#CCE",
+    "primary": "#CCE",
+    "secondary": "#CCD",
+    "surfaces": ["#FFF", "#EEE", "#DDD"]
+})
+
+LOGO_FILENAME = conf.get("LOGO_FILENAME", "")
+
 # Override any settings here if a local_settings.py file exists
+# Hm, we should probably fold in / decide on one settings override
+# mechanism here
 try:
     from globus_portal_framework.local_settings import *  # noqa
 except ImportError:

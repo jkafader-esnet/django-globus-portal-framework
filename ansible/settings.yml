@@ -4,5 +4,10 @@ colors:
   header: "#333333"
   primary: "#AAAAFF"
   secondary: "#AAAAAA"
+  surfaces:
+    - "#FFFFFF"
+    - "#EEEEEE"
+    - "#DDDDDD"
 logo_file: identity/logo.png
 about_page_template: identity/about.html
+hostname: "test.example.com"
