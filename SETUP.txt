@@ -36,7 +36,7 @@ docker --help
 
 # start the target docker container ("sleep 600" to stay alive while we install)
 # map port 80 in the container to localhost:8080
-docker run -d -t --name=globus-portal -p 8080:80 python:3.10-slim-bullseye
+docker run -d -t --name=globus-portal -p 8080:80 python:3.9-slim-bullseye
 
 # if so, we're ready to run the role which will bring up the image
 ansible-playbook --connection docker --inventory "globus-portal," $WORK_DIR/django-globus-portal-framework/ansible/docker.yml

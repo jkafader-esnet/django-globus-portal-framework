@@ -26,6 +26,7 @@
       - build-essential
       - git
       - libapache2-mod-wsgi-py3
+      - python3-setuptools
       - rsync
 
 - name: create /etc/globus-portal if it doesn't exist
@@ -33,7 +34,6 @@
       path: /etc/globus-portal
       state: directory
       recurse: yes
-
 
 - name: Render settings.yml
   template:
@@ -61,22 +61,21 @@
     cmd: "python3 -m venv /sites/django-globus-portal-framework/venv/"
     creates: "/sites/django-globus-portal-framework/venv/"
 
-- name: Install django-globus-portal-framework
+- name: Install django-globus-portal-framework requirements
   pip:
-    editable: true
-    name: "/sites/django-globus-portal-framework/"
+    requirements: "/sites/django-globus-portal-framework/requirements.txt"
     virtualenv: "/sites/django-globus-portal-framework/venv/"
   notify: restart apache
 
-# disable for now for demo
-#- name: render site apache settings
-#  template:
-#    src: globus-portal.conf.j2
-#    dest: /etc/apache2/sites-available/globus-portal.conf
+- name: render site apache settings
+  template:
+    src: globus-portal.conf.j2
+    dest: /etc/apache2/sites-available/globus-portal.conf
+  notify: restart apache
 
-#- name: enable site apache conf
-#  shell:
-#    cmd: "a2ensite globus-portal.conf"
-#    creates: /etc/apache2/sites-enabled/globus-portal.conf
-#  notify: restart apache
+- name: enable site apache conf
+  shell:
+    cmd: "a2ensite globus-portal.conf"
+    creates: /etc/apache2/sites-enabled/globus-portal.conf
+  notify: restart apache
 
